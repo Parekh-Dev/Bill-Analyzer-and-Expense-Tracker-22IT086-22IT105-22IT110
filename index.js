@@ -99,15 +99,43 @@ app.get('/logout', function(req, res){
 
 
 app.get('/download', async function(req, res) {
-    const expenses = await DB.getExpenses(); // Fetch your expenses data here
+    const { date, month, year } = req.query; // Extract the query parameters
+
+    let expenses = await DB.getExpenses(); // Fetch your expenses data here
+
+    // Filter the expenses based on the query parameters
+    if (date) {
+        expenses = expenses.filter(expense => new Date(expense.date).getDate() === Number(date));
+    }
+    if (month) {
+        expenses = expenses.filter(expense => new Date(expense.date).getMonth() + 1 === Number(month));
+    }
+    if (year) {
+        expenses = expenses.filter(expense => new Date(expense.date).getFullYear() === Number(year));
+    }
+
     const doc = new PDFDocument;
 
     const stream = doc.pipe(fs.createWriteStream('example.pdf'));
 
-    expenses.forEach((expense, index) => {
-        doc
-            .fontSize(27)
-            .text(`Name: ${expense.name}, Total: ${expense.total}, Date: ${new Date(expense.date).toLocaleDateString()}`, 100, 100 + index * 50);
+    // Define the table headers
+    const headers = ['S.No', 'Name', 'Total', 'Date'];
+
+    // Define the table column widths
+    const columnWidths = [50, 150, 100, 100];
+
+    // Draw the table headers
+    headers.forEach((header, i) => {
+        doc.text(header, 100 + i * columnWidths[i], 100);
+    });
+
+    // Draw the table rows
+    expenses.forEach((expense, i) => {
+        const y = 150 + i * 50;
+        doc.text((i + 1).toString(), 100, y); // Serial number
+        doc.text(expense.name, 100 + columnWidths[0], y);
+        doc.text(expense.total.toString(), 100 + columnWidths[0] + columnWidths[1], y);
+        doc.text(new Date(expense.date).toLocaleDateString(), 100 + columnWidths[0] + columnWidths[1] + columnWidths[2], y);
     });
 
     doc.end();
@@ -116,7 +144,6 @@ app.get('/download', async function(req, res) {
         res.redirect('/dashboard');
     });
 });
-
 app.post("/extractAmount", upload.single("image"), async function (req, res) {
     const userData = req.body; //student_id, firstname, lastname, phone_no, department, github, linkedin, resume
     // Write a code which changes the name of the file uploaded by the user to his/her studentID using fs
