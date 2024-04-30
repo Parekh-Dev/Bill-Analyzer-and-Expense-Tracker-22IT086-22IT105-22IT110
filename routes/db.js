@@ -40,7 +40,10 @@ async function addExpense(name, total, date, userId) {
         return false; 
     } 
 }
-
+async function getExpensesByName(name, userId) {
+    const [result] = await connection.query(`SELECT * FROM dataofuser WHERE name LIKE '%${name}%' AND uploadBy = '${userId}'`);                                                        
+    return result;
+}
 async function getExpenses(userId) {
     [result] = await connection.query('SELECT * FROM dataofuser where uploadBy = ?', [userId]);
     return result;
@@ -50,5 +53,6 @@ module.exports = {
     registerUser,
     isLogin,
     addExpense,
-    getExpenses
+    getExpenses,
+    getExpensesByName
 };

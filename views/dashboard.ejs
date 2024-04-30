@@ -61,14 +61,18 @@
                         <!-- <ul class="nav justify-content-center">
                             <input type="date" style="padding-left: 5px;">
                         </ul> -->
-                        <form class="d-flex" role="search">
+                        <form action="/dashboard/search" method="POST" class="d-flex" role="search">
+                        <!-- <form class="d-flex" role="search"> -->
                             <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-right: 10px;">
                                 <button type="button" class="btn btn-outline-primary">year</button>
                                 <button type="button" class="btn btn-outline-primary">month</button>
                                 <button type="button" class="btn btn-outline-primary">date</button>
                               </div>
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                                <input class="form-control me-2" type="search" name="name" placeholder="search" value="<%= sea %>">
+                                <button  class="btn btn-outline-primary" type="submit">Search</button>
+                            <!-- </form> -->
+                            <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button> -->
                         </form>
                     </div>
                   </nav>

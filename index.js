@@ -55,7 +55,7 @@ app.post('/login', async function(req, res){
 
 app.get('/dashboard', async function(req, res){
     const expenses = await DB.getExpenses(userId);
-    res.render("dashboard", {expenses: expenses})
+    res.render("dashboard", {expenses: expenses, sea: ""})
 });
 
 function runPythonScript(scriptPath, imgPath) {
@@ -159,6 +159,14 @@ app.post("/extractAmount", upload.single("image"), async function (req, res) {
             console.error('Error:', error);
         });
 });
+
+app.post('/dashboard/search', async function(req, res) {
+    const name = req.body.name;
+    // const userId = req.userId; // Assuming you have user session implemented
+    const expenses = await DB.getExpensesByName(name, userId);
+    res.render('dashboard', { expenses: expenses, sea: name});
+});
+
 
 app.post('/register', async function(req, res){
     const registerData = req.body;
