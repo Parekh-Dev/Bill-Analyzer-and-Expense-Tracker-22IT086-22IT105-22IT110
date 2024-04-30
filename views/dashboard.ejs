@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #backScreen {
+            width: 100vw;
+            height: 100vh;
+            background: #9053c7;
+            background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
+            background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
+            background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #innerBox{
+            width: 90%;
+            height: 85vh;
+            background-color: white;
+            border-radius: 10px;
+        }
+        header{
+            height: 100px;
+        }
+        #MyFoot{
+            position: relative;
+            background-color: rgb(248, 249, 250);
+            width: 100%;
+            color: black;
+            text-align: center;
+            padding: 15px;
+            letter-spacing: 2px;
+            word-spacing: 5px;
+            bottom: -6vh;
+            border-radius: 0px 0px 10px 10px;
+        }
+        #addexpButton{
+            position: relative;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="backScreen">
+       <div id="innerBox">
+            <header>
+                <nav class="navbar bg-body-tertiary" style="border-radius: 10px;">
+                    <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">Expense Tracker</span>
+                        <!-- <ul class="nav justify-content-center">
+                            <input type="date" style="padding-left: 5px;">
+                        </ul> -->
+                        <form class="d-flex" role="search">
+                            <div class="btn-group" role="group" aria-label="Basic outlined example" style="margin-right: 10px;">
+                                <button type="button" class="btn btn-outline-primary">year</button>
+                                <button type="button" class="btn btn-outline-primary">month</button>
+                                <button type="button" class="btn btn-outline-primary">date</button>
+                              </div>
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Search</button>
+                        </form>
+                    </div>
+                  </nav>
+            </header>
+            <main>
+                <div class="container">    
+                    <table class="table table-light table-sm">
+                        <thead>
+                            <tr>
+                            <th scope="col">Sr no.</th>
+                            <th scope="col">name</th>
+                            <th scope="col">amount</th>
+                            <th scope="col">date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% 
+                                expenses.sort(function(a, b) {
+                                    return new Date(a.date) - new Date(b.date);
+                                });
+                                expenses.forEach(function(expense, index) { 
+                                %>
+                                <tr>
+                                    <th scope="row"><%= index + 1 %></th>
+                                    <td><%= expense.name %></td>
+                                    <td><%= expense.total %></td>
+                                    <td>
+                                        <% 
+                                        let date = new Date(expense.date);
+                                        let formattedDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                                        %>
+                                        <%= formattedDate %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center" id="MyFoot">
+                    <div class="row">
+                      <div class="col-9"> </div>
+                      <div class="col-3"> 
+                        <button type="button" class="btn btn-outline-success" onclick="toHomePage()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16" style="padding-bottom: 4px;">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                          </svg> Add expense</button>
+                        <button type="button" class="btn btn-outline-primary" style="margin-left: 10px;"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-filetype-pdf" viewBox="0 0 16 16" style="padding-bottom: 4px;">
+                            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM1.6 11.85H0v3.999h.791v-1.342h.803q.43 0 .732-.173.305-.175.463-.474a1.4 1.4 0 0 0 .161-.677q0-.375-.158-.677a1.2 1.2 0 0 0-.46-.477q-.3-.18-.732-.179m.545 1.333a.8.8 0 0 1-.085.38.57.57 0 0 1-.238.241.8.8 0 0 1-.375.082H.788V12.48h.66q.327 0 .512.181.185.183.185.522m1.217-1.333v3.999h1.46q.602 0 .998-.237a1.45 1.45 0 0 0 .595-.689q.196-.45.196-1.084 0-.63-.196-1.075a1.43 1.43 0 0 0-.589-.68q-.396-.234-1.005-.234zm.791.645h.563q.371 0 .609.152a.9.9 0 0 1 .354.454q.118.302.118.753a2.3 2.3 0 0 1-.068.592 1.1 1.1 0 0 1-.196.422.8.8 0 0 1-.334.252 1.3 1.3 0 0 1-.483.082h-.563zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638z"/>
+                          </svg>
+                          <a href="/download" target="_blank" class="btn btn-primary">Print PDF</a>
+                        </button>
+                           </div>
+                      </div>
+                    </div>
+                </div>
+            </main>
+       </div>
+    </div>
+</body>
+<script>
+    function toHomePage(){
+        window.location.href = "/addExpense";
+    }
+</script>
+</html>
